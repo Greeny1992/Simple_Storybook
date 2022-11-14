@@ -8,11 +8,11 @@ Our goal at the end of the session, will be a simple task list, similar to this 
 
 ## Table of Content
 
- 1. Get started
- 2. Simple component
- 3. Composite component
- 4. Data
- 5. Screens
+ 1. [Get started](### Get started)
+ 2. [Simple component](### Simple component) 
+ 3. [Composite component](### Composite component)
+ 4. [Data](### Data)
+ 5. [Screens](### Screens)
 
 ### Get started
 
@@ -183,5 +183,4 @@ Archived.args = {
 ```
 
   </details>
-
 
