@@ -1,20 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-task',
   template: `
-    <p>
-      task works!
-    </p>
+    <div class="list-item">
+      <label [attr.aria-label]="task.title + ''" for="title">
+        <input
+          type="text"
+          [value]="task.title"
+          readonly="true"
+          id="title"
+          name="title"
+        />
+      </label>
+    </div>
   `,
-  styles: [
-  ]
 })
-export class TaskComponent implements OnInit {
+export class TaskComponent {
+  @Input() task: any;
 
-  constructor() { }
+  // tslint:disable-next-line: no-output-on-prefix
+  @Output()
+  onPinTask = new EventEmitter<Event>();
 
-  ngOnInit(): void {
-  }
-
+  // tslint:disable-next-line: no-output-on-prefix
+  @Output()
+  onArchiveTask = new EventEmitter<Event>();
 }
