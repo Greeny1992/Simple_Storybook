@@ -49,6 +49,11 @@ The simplest component will be a Task, which has a
   state: string;
 - @Output onPinTask ➡️ Event when a task is pinned
 - @Output onArchiveTask ➡️ Event when a task is archived
+- @Input task ➡️ A task with properties   id: string;
+  title: string;
+  state: string;
+- @Output onPinTask ➡️ Event when a task is pinned
+- @Output onArchiveTask ➡️ Event when a task is archived
 
 At first, let's create the component and the accompanying story file:
 *src/app/components/task.component.ts*
