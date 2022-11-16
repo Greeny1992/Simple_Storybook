@@ -388,3 +388,6 @@ For that look in
 and also the store have to be wired to the app in the top-level module
 
 The reason to keep the presentational version of the TaskList separate is that it is easier to test and isolate. As it doesn't rely on the presence of a store, it is much easier to deal with from a testing perspective.
+
+Now that we have some actual data populating our component obtained from the store, we could have wired it to *src/app/app.component.ts* and render the component there. Don't worry about it. We'll take care of it in the next chapter.
+
