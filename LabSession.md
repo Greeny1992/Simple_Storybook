@@ -8,19 +8,21 @@ Our goal at the end of the session, will be a simple task list, similar to this 
 
 ## Table of Content
 
- 1. Get started
- 2. Simple component
- 3. Composite component
- 4. Data
- 5. Screens
+ 1. [Get started](#get-started)
+ 2. [Simple component](#simple-component) 
+ 3. [Composite component](#composite-component)
+ 4. [Data](#data)
+ 5. [Screens](#screens)
 
-### Get started
+----------------------
+## Get started
 
 To set up storybook, it is necessary, to already have a working angular app.
 At first you have to run the following command in the existing project's root directory
-
-    # Add Storybook:
-    npx storybook init
+```
+# Add Storybook:
+npx storybook init
+```
 
 The command above will make the following changes to your local env:
 
@@ -31,17 +33,22 @@ The command above will make the following changes to your local env:
 - Setup telemetry
 
 The next step will be to start your Storybook with this command
+```
+npm run storybook 
+```
 
-  npm run storybook 
 ----------------
 
-### Simple component
+## Simple component
 
 To build our task list in a C-DD manner, we have to think of the simplest component of our list.
 The simplest component will be a Task, which has a
 
-- title ➡️ a string describing the task
-- state ➡️ is the task checked (archived) or pinned
+- @Input task ➡️ A task with properties   id: string;
+  title: string;
+  state: string;
+- @Output onPinTask ➡️ Event when a task is pinned
+- @Output onArchiveTask ➡️ Event when a task is archived
 
 At first, let's create the component and the accompanying story file:
 *src/app/components/task.component.ts*
@@ -50,24 +57,54 @@ At first, let's create the component and the accompanying story file:
 ```ts
 // src/app/components/task.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+import { Task } from '../models/task.model';
+
 @Component({
   selector: 'app-task',
   template: `
-    <div class="list-item">
-      <label [attr.aria-label]="task.title + ''" for="title">
+    <div class="list-item {{ task?.state }}">
+      <label
+        [attr.aria-label]="'archiveTask-' + task.id"
+        for="checked-{{ task?.id }}"
+        class="checkbox"
+      >
+        <input
+          type="checkbox"
+          disabled="true"
+          [defaultChecked]="task?.state === 'TASK_ARCHIVED'"
+          name="checked-{{ task?.id }}"
+          id="checked-{{ task?.id }}"
+        />
+        <span class="checkbox-custom" (click)="onArchive(task.id)"></span>
+      </label>
+      <label
+        [attr.aria-label]="task.title + ''"
+        for="title-{{ task?.id }}"
+        class="title"
+      >
         <input
           type="text"
           [value]="task.title"
           readonly="true"
-          id="title"
-          name="title"
+          id="title-{{ task?.id }}"
+          name="title-{{ task?.id }}"
+          placeholder="Input title"
         />
       </label>
+      <button
+        *ngIf="task?.state !== 'TASK_ARCHIVED'"
+        class="pin-button"
+        [attr.aria-label]="'pinTask-' + task.id"
+        (click)="onPin(task.id)"
+      >
+        <span class="icon-star"></span>
+      </button>
     </div>
   `,
 })
 export class TaskComponent {
-  @Input() task: any;
+  @Input() task: Task = {} as Task;
 
   // tslint:disable-next-line: no-output-on-prefix
   @Output()
@@ -76,7 +113,23 @@ export class TaskComponent {
   // tslint:disable-next-line: no-output-on-prefix
   @Output()
   onArchiveTask = new EventEmitter<Event>();
-} 
+
+  /**
+   * Component method to trigger the onPin event
+   * @param id string
+   */
+  onPin(id: any) {
+    this.onPinTask.emit(id);
+  }
+  /**
+   * Component method to trigger the onArchive event
+   * @param id string
+   */
+  onArchive(id: any) {
+    this.onArchiveTask.emit(id);
+  }
+}
+
 ```
 
 Now you have 10 minutes to write some tests for this component. Be creative and remember to the online session
@@ -84,6 +137,7 @@ Now you have 10 minutes to write some tests for this component. Be creative and 
   <summary>Click me for solution</summary>
 
 ```ts
+
 //src/app/components/task.stories.ts
 import { Meta, Story } from '@storybook/angular';
 
@@ -137,5 +191,3 @@ Archived.args = {
 ```
 
   </details>
-
-
