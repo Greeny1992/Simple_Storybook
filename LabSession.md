@@ -8,19 +8,21 @@ Our goal at the end of the session, will be a simple task list, similar to this 
 
 ## Table of Content
 
- 1. [Get started](### Get started)
- 2. [Simple component](### Simple component) 
- 3. [Composite component](### Composite component)
- 4. [Data](### Data)
- 5. [Screens](### Screens)
+ 1. [Get started](#get-started)
+ 2. [Simple component](#simple-component) 
+ 3. [Composite component](#composite-component)
+ 4. [Data](#data)
+ 5. [Screens](#screens)
 
-### Get started
+----------------------
+## Get started
 
 To set up storybook, it is necessary, to already have a working angular app.
 At first you have to run the following command in the existing project's root directory
-
-    # Add Storybook:
-    npx storybook init
+```
+# Add Storybook:
+npx storybook init
+```
 
 The command above will make the following changes to your local env:
 
@@ -31,17 +33,27 @@ The command above will make the following changes to your local env:
 - Setup telemetry
 
 The next step will be to start your Storybook with this command
+```
+npm run storybook 
+```
 
-  npm run storybook 
 ----------------
 
-### Simple component
+## Simple component
 
 To build our task list in a C-DD manner, we have to think of the simplest component of our list.
 The simplest component will be a Task, which has a
 
-- title ➡️ a string describing the task
-- state ➡️ is the task checked (archived) or pinned
+- @Input task ➡️ A task with properties   id: string;
+  title: string;
+  state: string;
+- @Output onPinTask ➡️ Event when a task is pinned
+- @Output onArchiveTask ➡️ Event when a task is archived
+- @Input task ➡️ A task with properties   id: string;
+  title: string;
+  state: string;
+- @Output onPinTask ➡️ Event when a task is pinned
+- @Output onArchiveTask ➡️ Event when a task is archived
 
 At first, let's create the component and the accompanying story file:
 *src/app/components/task.component.ts*
@@ -130,6 +142,7 @@ Now you have 10 minutes to write some tests for this component. Be creative and 
   <summary>Click me for solution</summary>
 
 ```ts
+
 //src/app/components/task.stories.ts
 import { Meta, Story } from '@storybook/angular';
 
@@ -183,4 +196,3 @@ Archived.args = {
 ```
 
   </details>
-
