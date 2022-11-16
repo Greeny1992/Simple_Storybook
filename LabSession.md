@@ -211,8 +211,8 @@ The tasklist like it is implemented has a sort mechanism. That means that an pin
 - @Output onArchiveTask ➡️ Event when a task is archived
 
 At first, let's create the component and the accompanying story file:
-*src/app/components/task.component.ts*
-*src/app/components/task.stories.ts*
+*src/app/components/task-list.component.ts*
+*src/app/components/task-list.stories.ts*
 
 ```ts
 //src/app/components/task-list.component.ts
@@ -365,3 +365,26 @@ Empty.args = {
 
   </details>
 
+-------------
+
+## Data
+
+For now we have only a "static" component. It doesn't toalk to anything. To get data, wen need a container.
+
+For this example i added [ngxs](https://ngxs.gitbook.io/ngxs/) (similar to ngrx/store) and created a state file
+
+*src/app/state/task.state.ts*
+
+Then we'll update our TaskList component to read data from the store. But at first move the presentational version to 
+
+*src/app/components/pure-task-list.component.ts*
+
+And change the task-list.component a little bit.
+We also have to build a bridge between the components and the store.
+For that look in 
+
+*src/app/components/task.module.ts*
+
+and also the store have to be wired to the app in the top-level module
+
+The reason to keep the presentational version of the TaskList separate is that it is easier to test and isolate. As it doesn't rely on the presence of a store, it is much easier to deal with from a testing perspective.
