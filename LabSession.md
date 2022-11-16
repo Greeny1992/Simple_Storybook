@@ -44,8 +44,11 @@ npm run storybook
 To build our task list in a C-DD manner, we have to think of the simplest component of our list.
 The simplest component will be a Task, which has a
 
-- title ➡️ a string describing the task
-- state ➡️ is the task checked (archived) or pinned
+- @Input task ➡️ A task with properties   id: string;
+  title: string;
+  state: string;
+- @Output onPinTask ➡️ Event when a task is pinned
+- @Output onArchiveTask ➡️ Event when a task is archived
 
 At first, let's create the component and the accompanying story file:
 *src/app/components/task.component.ts*
@@ -196,6 +199,15 @@ Archived.args = {
 So the next step will be to build up a composite component. This means that we want to combine the componentent from the previous step together to a list. We do this to see what happens if we add more complexity.
 
 The tasklist like it is implemented has a sort mechanism. That means that an pinned task is showed at the top of the list. Than we have also a loading screen and a empty state.
+
+- @Input loading ➡️ a boolean if data is loading
+- @Input tasks ➡️ takes an array of type Task
+- @Output onPinTask ➡️ Event when a task is pinned
+- @Output onArchiveTask ➡️ Event when a task is archived
+
+At first, let's create the component and the accompanying story file:
+*src/app/components/task.component.ts*
+*src/app/components/task.stories.ts*
 
 ```ts
 //src/app/components/task-list.component.ts
