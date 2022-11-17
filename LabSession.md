@@ -465,3 +465,66 @@ Error.args = {
 
 </details>
 
+----------------------------
+
+## Interaction and accessibility
+
+So far we build a fully functional application from ground. It's great to see each change directly by checking our stories. Nevertheless this is lot of extra work when you have dozens of components. So it would be great to do this automatically, or?
+Lucky us we have interactions, which runs specific tasks after our story is rendered. 
+The @storybook/addon-interactions provide us a play-function. With those it is possible to simulate human behavior. 
+
+Let's add the following at the end of your pure-inbox-screen.stories.ts
+
+```ts
+export const WithInteractions = Template.bind({});
+WithInteractions.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  // Simulates pinning the first task
+  await fireEvent.click(canvas.getByLabelText('pinTask-1'));
+  // Simulates pinning the third task
+  await fireEvent.click(canvas.getByLabelText('pinTask-3'));
+};
+
+```
+
+So we created a new story with some interactions. Lets have a look at the Storybook. 
+
+To add playback-controlls to your storybook add these lines to the .storybook/main.js
+
+```ts
+  features: {
+    interactionsDebugger: true, // 👈 Enable playback controls
+  },
+```
+
+The official storybook documentation has [here](https://storybook.js.org/65219e11fb3ff805395ff2c5f447fe4f/addon-interaction-example-optimized.mp4) also a nice showcase.
+
+But this interaction tests are only triggered when you open the story. 
+If you wan't to do all interaction tests of your storybook automatically you have to add a add-on
+
+```
+npm install @storybook/test-runner --save-dev
+```
+
+Updated the scripts in your package.json
+
+```
+{
+  "scripts": {
+    "test-storybook": "test-storybook"
+  }
+}
+```
+
+and run the tests
+
+```
+npm run test-storybook -- --watch
+```
+
+Another easy possibility for testing is to add accessibility tests. For this storybook has an nice add-on
+
+```
+npm install @storybook/addon-a11y --save-dev
+```
+
