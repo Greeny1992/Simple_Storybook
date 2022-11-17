@@ -391,3 +391,78 @@ The reason to keep the presentational version of the TaskList separate is that i
 
 Now that we have some actual data populating our component obtained from the store, we could have wired it to *src/app/app.component.ts* and render the component there. Don't worry about it. We'll take care of it in the next chapter.
 
+------------
+
+## Screens
+
+The first step of this session was to build a componentent bottom up. This helped us to develop each component in isolation and figure out its data needs. All this without an start of the whole applcation or build out screens!
+
+The next step will be to develop a screen in Storybook. This screen will be pretty trivial, by wrapping the TaskList in some layout and add an top-level error.
+
+The first step is to update our store to include the error field. Look for the comments in the 
+
+*src/app/state/task.state.ts*
+
+The next thing is to create a pure inbox screen component
+
+*src/app/components/pure-inbox-screen.component.ts*
+
+This has a simple @Input error of type any. We keep it pure so it is better testable in Storybook. After that we create a container for this PureInbox 
+
+*src/app/components/inbox-screen.component.ts*
+
+This component grabs again the data like the tasklist before. That InboxScreen is used in the app.componentts. So, now we have a full app with a screen.
+
+Don't forget to update the app.module.ts with the neccessary declaration.
+
+As we saw previously, the TaskList component is a container that renders the PureTaskList presentational component. By definition, container components cannot be simply rendered in isolation; they expect to be passed some context or connected to a service. What this means is that to render a container in Storybook, we must mock (i.e., provide a pretend version) the context or service it requires.
+
+When placing the TaskList into Storybook, we were able to dodge this issue by simply rendering the PureTaskList and avoiding the container. We'll do something similar and render the PureInboxScreen in Storybook also.
+
+However, we have a problem with the PureInboxScreen because although the PureInboxScreen itself is presentational, its child, the TaskList, is not. In a sense, the PureInboxScreen has been polluted by “container-ness”.
+
+So your next step will be to create the stories for the PureInboxScreenComponent
+
+<details>
+  <summary>Click me for solution</summary>
+
+```ts
+
+
+import { moduleMetadata, Meta, Story } from '@storybook/angular';
+
+import { CommonModule } from '@angular/common';
+
+import { PureInboxScreenComponent } from './pure-inbox-screen.component';
+
+import { TaskModule } from './task.module';
+
+ import { Store, NgxsModule } from '@ngxs/store';
+ import { TasksState } from '../state/task.state';
+
+export default {
+  component:PureInboxScreenComponent,
+  decorators: [
+    moduleMetadata({
+     imports: [CommonModule,TaskModule,NgxsModule.forRoot([TasksState])],
+     providers: [Store],
+    }),
+  ],
+  title: 'PureInboxScreen',
+} as Meta;
+
+const Template: Story = (args) => ({
+  props: args,
+});
+
+export const Default = Template.bind({});
+
+export const Error = Template.bind({});
+Error.args = {
+  error: true,
+};
+
+```
+
+</details>
+
