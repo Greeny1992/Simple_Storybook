@@ -421,13 +421,12 @@ When placing the TaskList into Storybook, we were able to dodge this issue by si
 
 However, we have a problem with the PureInboxScreen because although the PureInboxScreen itself is presentational, its child, the TaskList, is not. In a sense, the PureInboxScreen has been polluted by “container-ness”.
 
-So your next step will be to create the stories for the PureInboxScreenComponent
+So your next step will be to create the stories for the PureInboxScreenComponent. And dont forget about the state 😉.
 
 <details>
   <summary>Click me for solution</summary>
 
 ```ts
-
 
 import { moduleMetadata, Meta, Story } from '@storybook/angular';
 
